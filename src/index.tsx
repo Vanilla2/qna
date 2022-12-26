@@ -1,15 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import './sass/index.scss';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider } from 'react-router';
+import router from './utils/router';
+import Navbar from './components/navbar/Navbar';
+import Helmet from "./components/Helmet"
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Navbar/>
+    <Helmet type = "theme--dark"/>
+    <RouterProvider router = {router}/>
   </React.StrictMode>
 );
 
