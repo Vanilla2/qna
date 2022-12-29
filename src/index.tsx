@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './sass/index.scss';
@@ -6,15 +7,26 @@ import { RouterProvider } from 'react-router';
 import router from './utils/router';
 import Navbar from './components/navbar/Navbar';
 import Helmet from "./components/Helmet"
+import AlertTemplate from "react-alert-template-basic";
+import {positions, Provider as AlertProvider} from "react-alert";
+import "react-responsive-modal/styles.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const alert_options = {
+  timeout: 4 * 1000,
+  position: positions.TOP_CENTER
+}
+
 root.render(
   <React.StrictMode>
-    <Navbar/>
-    <Helmet type = "theme--dark"/>
-    <RouterProvider router = {router}/>
+    <AlertProvider template = {AlertTemplate} {...alert_options}>
+      <Navbar/>
+      <Helmet type = "theme--dark"/>
+      <RouterProvider router = {router}/>
+    </AlertProvider>
   </React.StrictMode>
 );
 
