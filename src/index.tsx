@@ -10,6 +10,7 @@ import Helmet from "./components/Helmet"
 import AlertTemplate from "react-alert-template-basic";
 import {positions, Provider as AlertProvider} from "react-alert";
 import "react-responsive-modal/styles.css";
+import { AuthProvider } from './context/AuthContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,9 +24,10 @@ const alert_options = {
 root.render(
   <React.StrictMode>
     <AlertProvider template = {AlertTemplate} {...alert_options}>
-      <Navbar/>
-      <Helmet type = "theme--dark"/>
-      <RouterProvider router = {router}/>
+      <AuthProvider>
+        <Helmet type = "theme--dark"/>
+        <RouterProvider router = {router}/>
+      </AuthProvider>
     </AlertProvider>
   </React.StrictMode>
 );

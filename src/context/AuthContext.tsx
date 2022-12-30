@@ -18,12 +18,12 @@ export const AuthContext = React.createContext <Data> ({
 export const AuthProvider = ({ children, ...props }: {children: any}) => {
     const [user, setUser] = useState <User | null | undefined> (undefined);
     const alert = useAlert();
+    console.log(user);
 
     const init = async () => {
         try {
             let data = await api.initUser();
-            console.log(data);
-            setUser({password: "lol", username: "Test"});
+            setUser(data);
         }
         catch(e) {
             setUser(null);

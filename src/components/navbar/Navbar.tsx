@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { Modal } from 'react-responsive-modal';
 import "./Navbar.scss";
-import { login, signup } from '../../utils/api';
+import { AuthContext } from '../../context/AuthContext';
+import { Link, useHref } from 'react-router-dom';
 
 export interface Props {
     [key: string]: any
@@ -77,9 +78,8 @@ const SignupModal = ({modal, setModal, signup} : {modal: boolean, setModal: (x: 
 }
 
 const Navbar = (props: Props) => {
-    const auth = false;
     const [modal, setModal] = useState <"login" | "signup" | false> (false);
-    console.log(modal);
+    const {user, login, signup} = useContext(AuthContext);
 
     return (
         <>
@@ -87,13 +87,15 @@ const Navbar = (props: Props) => {
                 <LoginModal modal = {modal === "login"} setModal = {setModal} login = {login}/>
                 <SignupModal modal = {modal === "signup"} setModal = {setModal} signup = {signup}/>
                 <div className = "content">
-                    <p className = "logo">LOGO</p>
+                    <Link to = "/" className = "logo">Home</Link>
                     <div>
                         <input type = "text" className = "search default"/>
                     </div>
-                    {auth ? 
+                    {user ? 
                         <div className = "logged">
-                            
+                            <Link to = {`/profile/${user.user_id}`}>
+                                Profile
+                            </Link>
                         </div> :
                         <div className = "notlogged">
                             <button onClick = {() => setModal("login")} className = "default">Log in</button>

@@ -1,0 +1,48 @@
+
+.question-card {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--primary);
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 5px;
+
+    .title {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    .body {
+        margin-top: 20px;
+        font-size: 1.2em;
+        min-height: 50px;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 1.5em;
+
+        .vote {
+            display: flex;
+
+            .option {
+                color: white;
+            }
+            .voted {
+                color: var(--primary);
+            }
+            > div {
+                cursor: pointer;
+            }
+            > p {
+                margin: 0 15px;
+            }
+        }
+
+        > div {
+            display: flex;
+        }
+    }
+}

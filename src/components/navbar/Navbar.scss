@@ -57,7 +57,7 @@
             margin: 0 10px;
         }        
 
-        p {
+        .logo {
             font-size: 1.5em;
             color: var(--secondary);
             // margin-right: 50px;
@@ -73,6 +73,13 @@
             
             > * {
                 margin: 0 5px;
+            }
+        }
+
+        .logged {
+
+            a {
+                font-size: 1.5em;
             }
         }
     }
