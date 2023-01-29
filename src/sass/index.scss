@@ -29,7 +29,7 @@ a, .lk {
   // }
 }
 
-input, button {
+input, button, textarea {
   border: none;
   outline: none;
 }
@@ -109,7 +109,7 @@ a {
 
   > .content {
     display: flex;
-    width: var(--large);
+    width: var(--extra-large);
     align-items: center;
     align-self: center;
     margin: 30px
@@ -117,6 +117,7 @@ a {
 }
 
 html {
+  overflow-x: hidden;
   background-color: var(--bg)
 }
 

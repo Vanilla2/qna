@@ -5,14 +5,14 @@ import { User } from "../utils/interfaces";
 
 interface Data  {
     user: User | null | undefined,
-    login: (username: string, password: string) => void,
-    signup: (username: string, password: string) => void,
+    login: (username: string, password: string) => Promise<void>,
+    signup: (username: string, password: string) => Promise<void>,
 }
 
 export const AuthContext = React.createContext <Data> ({
     user: null,
-    login: () => {},
-    signup: () => {},
+    login: () => new Promise (() => {}),
+    signup: () => new Promise (() => {}),
 });
 
 export const AuthProvider = ({ children, ...props }: {children: any}) => {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
     console.log(user);
 
     const init = async () => {
-        try {
+        try {   
             let data = await api.initUser();
             setUser(data);
         }
@@ -41,10 +41,10 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
             init();
         }
         catch (e: any) {
-            if (typeof e.message !== "string") {
+            if (typeof e.errorMessage !== "string") {
                 alert.error("Eroare!");
             }
-            else alert.error(e.message);
+            else alert.error(e.errorMessage);
         }
     }
 
@@ -55,10 +55,10 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
             init();
         }
         catch(e: any) {
-            if (typeof e.message !== "string") {
+            if (typeof e.errorMessage !== "string") {
                 alert.error("Eroare!");
             }
-            else alert.error(e.message);
+            else alert.error(e.errorMessage);
         }
     }
 

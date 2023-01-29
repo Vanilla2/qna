@@ -6,6 +6,11 @@
     margin: 10px 0;
     padding: 20px;
     border-radius: 5px;
+    width: 100%;
+
+    &.full {
+        font-size: 1.5em;
+    }
 
     .title {
         font-size: 1.5em;
@@ -30,8 +35,15 @@
             .option {
                 color: white;
             }
-            .voted {
+            .upvote.voted {
                 color: var(--primary);
+            }
+            .downvote.voted {
+                color: red;
+            }
+            .diff {
+                width: 20px;
+                text-align: center;
             }
             > div {
                 cursor: pointer;

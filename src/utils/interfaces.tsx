@@ -46,7 +46,7 @@
 
 interface User {
     email: string,
-    user_id?: string,
+    id?: string,
     password?: string,
     rating?: number,
     exp?: number,
@@ -78,10 +78,10 @@ interface Question {
     submitter_id: string,
     title: string,
     contents: string,
-    replies: Answer[],
     best_answer_id: string,
+    answers: Answer[],
     upvoters: string[],
     downvoters: string[]
 }
 
-export type {User, Question};
+export type {User, Question, Answer, Reply, EditSuggestion};

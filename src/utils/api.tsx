@@ -1,4 +1,3 @@
-import { questions } from "./dummyData";
 import { User } from "./interfaces";
 const url = "http://localhost:8080/api";
 
@@ -13,7 +12,8 @@ const parseJwt = (token: string) => {
 
 const getAuthToken = () => {
     const token = localStorage.getItem("jwt");
-    return token;
+    if (!token) return null;
+    return JSON.parse(token);
 }
 
 const setAuthToken = (token: string) => {
@@ -22,7 +22,21 @@ const setAuthToken = (token: string) => {
 
 const initUser = async () => {
     const token = getAuthToken();
-    if (token) return parseJwt(token);
+    if (token) {
+        const res = await fetch(`${url}/user`, {
+            method: "GET",
+            headers: {
+                'auth-token': token
+            },
+        });
+        // console.log(res.status);
+        if (res.status !== 200) {
+            return null;
+        }
+        else {
+            return (await res.json()).result;
+        }
+    }
     return null;
 }
 
@@ -30,11 +44,12 @@ const login = async (email: string, password: string) => {
     const res = await fetch(`${url}/login`, {
         method: "POST",
         headers: {
-            'Content-Type': "application/json"
+            'Content-Type': "application/json",
         },
         body: JSON.stringify({email, password})
     });
     const data = await res.json();
+    console.log(data);
     if (res.status !== 200) {
         throw data;
     }
@@ -59,7 +74,98 @@ const signup = async (email: string, password: string) => {
 }
 
 const getQuestions = async () => {
-    return questions;
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions`, {
+        method: "GET",
+        headers: {
+            'auth-token': token
+        },
+    });
+    const data = (await res.json()).result;
+    return data;
 }
 
-export {login, signup, initUser, getQuestions};
+const updownvote = async (question_id: string, type: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/votes`, {
+        method: "PUT",
+        headers: {
+            'auth-token': token
+        },
+        body: JSON.stringify({
+            question_id,
+            type
+        }),
+    });
+    return 
+}
+
+const addQuestion = async (title: string, contents: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions`, {
+        method: "POST",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({title, contents})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+const addAnswer = async (question_id: string, contents: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/addAnswer`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({question_id, contents})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+const addReply = async (question_id: string, answer_id: string, contents: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/addReply`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({question_id, answer_id, contents})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+const setFavoriteAnswer = async (question_id: string, answer_id: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/favoriteAnswer`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({question_id, answer_id})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+export {login, signup, initUser, getQuestions, updownvote, addQuestion, addAnswer, addReply, setFavoriteAnswer};

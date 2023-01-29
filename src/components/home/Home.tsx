@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Home.scss';
 import { useLoaderData } from 'react-router';
-import QuestionCard from '../QuestionCard/QuestionCard';
+import QuestionCard from '../questionCard/QuestionCard';
 import { Question } from '../../utils/interfaces';
+import { AuthContext } from '../../context/AuthContext';
 
 export interface Props {
     [key: string]: any
@@ -10,12 +11,13 @@ export interface Props {
 
 const Home = (props: Props) => {
     const data = useLoaderData() as Question[];
+    const {user, login, signup} = useContext(AuthContext);
     console.log(data);
 
     return (
         <div className = "home-page">
             <p className = "title">Home Page</p>
-            {data.map((x:Question) => <QuestionCard data = {x}/>)}
+            {data && data.map((x:Question) => <QuestionCard key = {x.id} data = {x}/>)}
         </div>
     );
 }

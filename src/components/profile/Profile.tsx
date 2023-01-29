@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router';
+import "./Profile.scss";
 
 export interface Props {
     [key: string]: any
