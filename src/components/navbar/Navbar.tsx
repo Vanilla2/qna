@@ -28,6 +28,9 @@ const Navbar = (props: Props) => {
                             <Link to = {`/profile/${user.id}`}>
                                 Profile
                             </Link>
+                            <Link to = {`/logout`}>
+                                Logout
+                            </Link>
                         </div> :
                         <div className = "notlogged">
                             <button onClick = {() => setModal("login")} className = "default">Log in</button>

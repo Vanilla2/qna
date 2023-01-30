@@ -63,14 +63,16 @@ interface EditSuggestion {
 interface Reply {
     id: string,
     contents: string,
-    submitter_id: string
+    submitter_id: string,
+    submitter_email: string,
 }
 
 interface Answer {
     id: string,
     contents: string,
     submitter_id: string,
-    replies: Reply[]
+    replies: Reply[],
+    submitter_email: string,
 }
 
 interface Question {
@@ -82,6 +84,7 @@ interface Question {
     answers: Answer[],
     upvoters: string[],
     downvoters: string[]
+    submitter_email: string
 }
 
 export type {User, Question, Answer, Reply, EditSuggestion};

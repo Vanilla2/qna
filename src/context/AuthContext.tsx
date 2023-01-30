@@ -7,12 +7,14 @@ interface Data  {
     user: User | null | undefined,
     login: (username: string, password: string) => Promise<void>,
     signup: (username: string, password: string) => Promise<void>,
+    logout: () => Promise<void>,
 }
 
 export const AuthContext = React.createContext <Data> ({
     user: null,
     login: () => new Promise (() => {}),
     signup: () => new Promise (() => {}),
+    logout: () => new Promise (() => {}),
 });
 
 export const AuthProvider = ({ children, ...props }: {children: any}) => {
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
         }
         catch (e: any) {
             if (typeof e.errorMessage !== "string") {
-                alert.error("Eroare!");
+                alert.error("Error!");
             }
             else alert.error(e.errorMessage);
         }
@@ -56,35 +58,37 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
         }
         catch(e: any) {
             if (typeof e.errorMessage !== "string") {
-                alert.error("Eroare!");
+                alert.error("Error!");
             }
             else alert.error(e.errorMessage);
         }
     }
 
-    // const logout = async () => {
-    //     try {
-    //         let {message} = await api.logout();
-    //         alert.success(message);
-    //         setUser(null);
-    //     }
-    //     catch(e:any) {
-    //         if (typeof e.message !== "string") {
-    //             alert.error("Eroare!");
-    //         }
-    //         else alert.error(e.message);
-    //     }
-    // }
+    const logout = async () => {
+        try {
+            await api.logout();
+            alert.success("Logged out succesfully");
+            setUser(null);
+        }
+        catch(e:any) {
+            if (typeof e.message !== "string") {
+                alert.error("Error!");
+            }
+            else alert.error(e.message);
+        }
+    }
 
     return (
         <AuthContext.Provider
             value={{ 
                 user,
                 login,
-                signup
+                signup,
+                logout
             }}
         >
-            {children}
+            {user === undefined ? <p>{}</p> : children}
+            {/* {children} */}
         </AuthContext.Provider>
     );
 };

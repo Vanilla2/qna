@@ -22,14 +22,14 @@ const alert_options = {
 }
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AlertProvider template = {AlertTemplate} {...alert_options}>
       <AuthProvider>
         <Helmet type = "theme--dark"/>
         <RouterProvider router = {router}/>
       </AuthProvider>
     </AlertProvider>
-  </React.StrictMode>
+  /* </React.StrictMode> */
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -17,7 +17,7 @@ const ReplyCard = (props: Reply) => {
         <div className = "reply-card">
             <p className = "user">
                 Author: {}
-                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_id}</Link>
+                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_email}</Link>
             </p>
             <p className = "content">{props.contents}</p>
         </div>
@@ -57,7 +57,7 @@ const AnswerCard = (props: Answer | any) => { // idiotic work-around
         <div className = "answer-card">
             <p className = "user">
                 Author: {}
-                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_id}</Link>
+                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_email}</Link>
             </p>
             <p className = "content">{props.contents}</p>
             <div className = "reply-section">
@@ -83,17 +83,11 @@ const AnswerCard = (props: Answer | any) => { // idiotic work-around
     )
 }
 
-const QuestionPage = (props: Props) => {
+const AddAnswerCard = (props: any) => {
     const {id} = useParams();
-    const data = (useLoaderData() as Question[]).filter(x => x.id === id)[0];
-    const favoriteAnswerArray = data.answers.filter(x => x.id === data.best_answer_id)
-    const favoriteAnswer = favoriteAnswerArray.length ? favoriteAnswerArray[0] : undefined;
-    const [answer, setAnswer] = useState("");
-    const {user} = useContext(AuthContext);
-    const alert = useAlert();
-    const sudo = data.submitter_id === user?.id;
     const navigate = useNavigate();
-    console.log(data);
+    const [answer, setAnswer] = useState("");
+    const alert = useAlert();
 
     const handleFormChange = (e: any) => {
         setAnswer(e.target.value);
@@ -113,15 +107,32 @@ const QuestionPage = (props: Props) => {
     }
 
     return (
+        <form className = "add-answer" onSubmit={handleAnswer}>
+            <div className="input-wrapper">
+                <p>Your Answer:</p>
+                <textarea onChange={handleFormChange} value = {answer} required/>
+            </div>
+            <input type = "submit" value = "Post Answer"/>
+        </form>
+    )
+}
+
+const QuestionPage = (props: Props) => {
+    const {id} = useParams();
+    const data = useLoaderData() as Question;
+    const favoriteAnswerArray = data.answers.filter(x => x.id === data.best_answer_id)
+    const favoriteAnswer = favoriteAnswerArray.length ? favoriteAnswerArray[0] : undefined;
+    const {user} = useContext(AuthContext);
+    const sudo = data.submitter_id === user?.id;
+
+    return (
         <div className = "question-page">
             <QuestionCard data = {data}/>
-            <form className = "add-answer" onSubmit={handleAnswer}>
-                <div className="input-wrapper">
-                    <p>Your Answer:</p>
-                    <textarea onChange={handleFormChange} value = {answer} required/>
-                </div>
-                <input type = "submit" value = "Post Answer"/>
-            </form>
+            {sudo ? 
+                <Link className = "edit-action" to = {`/edit-question/${id}`}>Edit question</Link> :
+                <Link className = "edit-action" to = {`/edit-question/${id}`}>Suggest edit</Link>
+            }
+            <AddAnswerCard/>
             {favoriteAnswer && 
             <div className = "favorite">
                 <h1>Favorite Answer:</h1>

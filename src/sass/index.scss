@@ -103,21 +103,24 @@ a {
 
 
 #root {
-  width: 100vw; 
+  // width: 100vw; 
   display:flex;
   flex-direction: column;
 
   > .content {
     display: flex;
-    width: var(--extra-large);
+    max-width: var(--extra-large);
+    width: 100%;
     align-items: center;
     align-self: center;
-    margin: 30px
+    margin: 30px;
+    padding: 20px;
   }
 }
 
 html {
-  overflow-x: hidden;
+  // overflow-x: hidden;
+  // overflow-y: overlay;
   background-color: var(--bg)
 }
 

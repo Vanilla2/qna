@@ -61,7 +61,7 @@ const QuestionCard = ({data}: Props) => {
                     </div>
                 </div>
                 <Link to = {`/profile/${data.submitter_id}`}>
-                    {data.submitter_id}
+                    {data.submitter_email}
                 </Link>
             </div>
         </div>

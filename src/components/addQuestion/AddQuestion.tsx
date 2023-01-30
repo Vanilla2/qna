@@ -3,6 +3,7 @@ import "./AddQuestion.scss";
 import { useState } from 'react';
 import { addQuestion } from '../../utils/api';
 import { useAlert } from 'react-alert';
+import { useNavigate } from 'react-router';
 
 export interface Props {
     [key: string]: any
@@ -11,6 +12,7 @@ export interface Props {
 const AddQuestion = (props: Props) => {
     const [formData, setFormData] = useState({title: "", contents: ""});
     const alert = useAlert();
+    const navigate = useNavigate();
 
     const handleFormChange = (key: string) => (e: any) => {
         setFormData({...formData, [key]: e.target.value})
@@ -19,7 +21,8 @@ const AddQuestion = (props: Props) => {
     const handleSubmit = async (e: any) => { // redirect user to the question after posting it
         e.preventDefault();
         try{
-            await addQuestion(formData.title, formData.contents);
+            const {result: id} = await addQuestion(formData.title, formData.contents);
+            navigate(`/question/${id}`);
             alert.success("New Question Added Successfully");
         }
         catch(e : any) {

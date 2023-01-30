@@ -40,6 +40,10 @@ const initUser = async () => {
     return null;
 }
 
+const logout = async () => {
+    localStorage.removeItem("jwt");
+}
+
 const login = async (email: string, password: string) => {
     const res = await fetch(`${url}/login`, {
         method: "POST",
@@ -75,14 +79,20 @@ const signup = async (email: string, password: string) => {
 
 const getQuestions = async () => {
     const token = getAuthToken();
-    const res = await fetch(`${url}/questions`, {
-        method: "GET",
-        headers: {
-            'auth-token': token
-        },
-    });
-    const data = (await res.json()).result;
-    return data;
+    try {
+        const res = await fetch(`${url}/questions`, {
+            method: "GET",
+            headers: {
+                'auth-token': token
+            },
+        });
+        const data = (await res.json()).result;
+        return data;
+    }
+    catch (e: any) {
+        console.log(e.message);
+        return e.message;
+    }
 }
 
 const updownvote = async (question_id: string, type: string) => {
@@ -151,6 +161,22 @@ const addReply = async (question_id: string, answer_id: string, contents: string
     return data;
 }
 
+const getQuestionById = async ({params: {id}}: {params: any}) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/${id}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data.result;
+}
+
 const setFavoriteAnswer = async (question_id: string, answer_id: string) => {
     const token = getAuthToken();
     const res = await fetch(`${url}/questions/favoriteAnswer`, {
@@ -168,4 +194,38 @@ const setFavoriteAnswer = async (question_id: string, answer_id: string) => {
     return data;
 }
 
-export {login, signup, initUser, getQuestions, updownvote, addQuestion, addAnswer, addReply, setFavoriteAnswer};
+const editQuestion = async (title: string, contents: string, question_id: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/questions/editContent`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({question_id, title, contents})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+const createSuggestion = async (contents: string, question_id: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/suggestions`, {
+        method: "POST",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+        body: JSON.stringify({question_id, contents})
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+export {createSuggestion, logout, login, signup, initUser, getQuestions, updownvote, addQuestion, addAnswer, addReply, setFavoriteAnswer, getQuestionById, editQuestion};
