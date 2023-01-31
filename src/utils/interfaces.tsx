@@ -48,7 +48,7 @@ interface User {
     email: string,
     id?: string,
     password?: string,
-    rating?: number,
+    rating: number,
     exp?: number,
 };
 
@@ -56,8 +56,11 @@ interface EditSuggestion {
     id: string,
     question_id: string,
     submitter_id: string,
+    submitter_email: string,
     contents: string,
-    edit_status: "default" | "approve" | "reject"
+    title: string,
+    old_contents: string,
+    edit_status: "pending" | "approve" | "reject"
 }
 
 interface Reply {

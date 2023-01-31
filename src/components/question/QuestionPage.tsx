@@ -16,8 +16,7 @@ const ReplyCard = (props: Reply) => {
     return (
         <div className = "reply-card">
             <p className = "user">
-                Author: {}
-                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_email}</Link>
+                Author: {props.submitter_email}
             </p>
             <p className = "content">{props.contents}</p>
         </div>
@@ -56,8 +55,8 @@ const AnswerCard = (props: Answer | any) => { // idiotic work-around
     return (
         <div className = "answer-card">
             <p className = "user">
-                Author: {}
-                <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_email}</Link>
+                Author: {props.submitter_email}
+                {/* <Link to = {`/profile/${props.submitter_id}`}>{props.submitter_email}</Link> */}
             </p>
             <p className = "content">{props.contents}</p>
             <div className = "reply-section">

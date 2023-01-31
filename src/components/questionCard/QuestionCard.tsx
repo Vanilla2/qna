@@ -60,9 +60,12 @@ const QuestionCard = ({data}: Props) => {
                         <i className={"fas fa-arrow-down downvote option" + ((vote === "downvote") ? " voted" : "")}></i>
                     </div>
                 </div>
-                <Link to = {`/profile/${data.submitter_id}`}>
+                <p className = "user">
                     {data.submitter_email}
-                </Link>
+                </p>
+                {/* <Link to = {`/profile/${data.submitter_id}`}>
+                    {data.submitter_email}
+                </Link> */}
             </div>
         </div>
     );

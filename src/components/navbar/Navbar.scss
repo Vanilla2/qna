@@ -46,7 +46,12 @@
     justify-content: center;
     background-color: var(--primary);
     padding: 20px;
+    font-family: 'Anton', sans-serif;
     // box-shadow: 0 0 2px 1px black;
+
+    // a {
+    //     text-transform: capitalize;
+    // }
 
     .content {
         width: var(--extra-large);
@@ -54,7 +59,7 @@
         justify-content: space-between;
         align-items: center;
 
-        > * {
+        a {
             color: var(--secondary) !important;
             margin: 0 10px;
         }        

@@ -1,4 +1,4 @@
-import { User } from "./interfaces";
+import { EditSuggestion, Question, User } from "./interfaces";
 const url = "http://localhost:8080/api";
 
 const parseJwt = (token: string) => {
@@ -78,6 +78,7 @@ const signup = async (email: string, password: string) => {
 }
 
 const getQuestions = async () => {
+    console.log("called");
     const token = getAuthToken();
     try {
         const res = await fetch(`${url}/questions`, {
@@ -228,4 +229,62 @@ const createSuggestion = async (contents: string, question_id: string) => {
     return data;
 }
 
-export {createSuggestion, logout, login, signup, initUser, getQuestions, updownvote, addQuestion, addAnswer, addReply, setFavoriteAnswer, getQuestionById, editQuestion};
+const getUserQuestions = async () => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/user/questions`, {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data.result;
+}
+
+const getSuggestions = async (type: "incoming" | "outgoing") => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/suggestions/${type}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    if (data.result) {
+        return await Promise.all(data.result.map(async (x: EditSuggestion) => {
+            const qs = await getQuestionById({params: {id: x.question_id}}) as Question;
+            return ({
+                ...x,
+                title: qs.title,
+                old_contents: qs.contents
+            });
+        }));
+    }
+    return data.result;
+}
+
+const setSuggestionStatus = async (type: "approve" | "reject", id: string) => {
+    const token = getAuthToken();
+    const res = await fetch(`${url}/suggestions/${type}/${id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': "application/json",
+            'auth-token': token,
+        },
+    });
+    const data = await res.json();
+    if (res.status !== 200) {
+        throw data;
+    }
+    return data;
+}
+
+export {createSuggestion, setSuggestionStatus, getSuggestions, getUserQuestions, logout, login, signup, initUser, getQuestions, updownvote, addQuestion, addAnswer, addReply, setFavoriteAnswer, getQuestionById, editQuestion};

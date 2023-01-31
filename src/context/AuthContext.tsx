@@ -39,8 +39,8 @@ export const AuthProvider = ({ children, ...props }: {children: any}) => {
     const login =  async (username: string, password: string) => {
         try {
             await api.login(username, password);
+            await init();
             alert.success("You logged in successfully");
-            init();
         }
         catch (e: any) {
             if (typeof e.errorMessage !== "string") {

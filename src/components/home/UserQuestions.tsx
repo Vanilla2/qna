@@ -9,17 +9,16 @@ export interface Props {
     [key: string]: any
 }
 
-const Home = (props: Props) => {
-    const {user} = useContext(AuthContext);
-    const data = (useLoaderData() as Question[]).filter(x => x.submitter_id !== user?.id);
+const UserQuestions = (props: Props) => {
+    const data = useLoaderData() as Question[];
     console.log(data);
 
     return (
         <div className = "home-page">
-            <p className = "title">Home Page</p>
+            <p className = "title">My Questions</p>
             {data && data.map((x:Question) => <QuestionCard key = {x.id} data = {x}/>)}
         </div>
     );
 }
 
-export default Home;
+export default UserQuestions;

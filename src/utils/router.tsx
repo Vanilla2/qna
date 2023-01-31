@@ -3,7 +3,7 @@ import Home from "../components/home/Home";
 import Navbar from "../components/navbar/Navbar";
 import ErrorPage from "../components/ErrorPage";
 import Profile from "../components/profile/Profile";
-import { getQuestionById, getQuestions } from "./api";
+import { getQuestionById, getQuestions, getUserQuestions } from "./api";
 import Login from "../components/auth/Login";
 import Signup from "../components/auth/Signup";
 import { useContext, useEffect } from "react";
@@ -12,6 +12,9 @@ import AddQuestion from "../components/addQuestion/AddQuestion";
 import Question from "../components/question/QuestionPage";
 import QuestionPage from "../components/question/QuestionPage";
 import EditQuestion from "../components/EditQuestion/EditQuestion";
+import UserQuestions from "../components/home/UserQuestions";
+import {loader as ProfileLoader} from "../components/profile/Profile"
+import Suggestion from "../components/suggestion/Suggestion";
 
 const buildElement = (props: any) => (
     <>
@@ -24,10 +27,13 @@ const buildElement = (props: any) => (
 
 const ProtectedRoute = (props: any) => {
     const {user} = useContext(AuthContext);
+    console.log("suka");
+    console.log(user);
             
     if (user === undefined) {
         return <></>
     }
+    // return <>mata</>
     return user ? <Outlet /> : <Navigate to="/login" />;      
 } 
 
@@ -41,55 +47,173 @@ const Logout = (props: any) => {
     return <Navigate to = "/login"/>
 }
 
-
 const router = createBrowserRouter(createRoutesFromElements(
     <>
         <Route element = {<ProtectedRoute/>}>
+            <Route element = {<Outlet/>} errorElement = {<ErrorPage/>}>
+                <Route 
+                    path = {"/"}
+                    element = { buildElement(<Home/>)}
+                    loader = {getQuestions}
+                />
+                <Route 
+                    path = {"/my-questions"}
+                    element = { buildElement(<UserQuestions/>)}
+                    loader = {getUserQuestions}
+                />
+                <Route 
+                    path = {"/add-question"}
+                    element = {buildElement(<AddQuestion/>)}
+                />
+                <Route 
+                    path = {"/question/:id"}
+                    element = {buildElement(<QuestionPage/>)}
+                    loader = {getQuestionById}
+                />
+                <Route 
+                    path = {"/profile"}
+                    element = {buildElement(<Profile/>)}
+                    loader={ProfileLoader}
+                />
+                <Route 
+                    path = {"/edit-question/:id"}
+                    element = {buildElement(<EditQuestion/>)}
+                    loader = {getQuestionById}
+                />
+                <Route 
+                    path = {"/suggestion/:id"}
+                    element = {buildElement(<Suggestion/>)}
+                    loader = {ProfileLoader}
+                />
+                <Route
+                    path = {"/logout"}
+                    element = {<Logout/>}
+                />
+            </Route>
+        </Route>
+        <Route element = {<Outlet/>} errorElement = {<ErrorPage/>}>
             <Route 
-                path = {"/"}
-                element = { buildElement(<Home/>)}
-                errorElement = { <ErrorPage/>}
-                loader = {getQuestions}
-
+                path = { "/login"}
+                element = { <Login/>}
             />
             <Route 
-                path = {"/add-question"}
-                element = {buildElement(<AddQuestion/>)}
+                path = {"/signup"}
+                element = {<Signup/>}
             />
             <Route 
-                path = {"/question/:id"}
-                element = {buildElement(<QuestionPage/>)}
-                loader = {getQuestionById}
-            />
-            <Route 
-                path = {"/profile/:id"}
-                element = {buildElement(<Profile/>)}
-            />
-            <Route 
-                path = {"/edit-question/:id"}
-                element = {buildElement(<EditQuestion/>)}
-                loader = {getQuestionById}
-            />
-            <Route
-                path = {"/logout"}
-                element = {<Logout/>}
+                path = {"*"}
+                element = {<Navigate to = "/"/>}
             />
         </Route>
-        <Route 
-            path = { "/login"}
-            element = { <Login/>}
-        />
-        <Route 
-            path = {"/signup"}
-            element = {<Signup/>}
-        />
-        <Route 
-            path = {"*"}
-            element = {<Navigate to = "/"/>}
-        />
-
     </>
 ));
+
+// const router = createBrowserRouter(createRoutesFromElements(
+//     <>
+//         <Route element = {<ProtectedRoute/>}>
+//             <Route 
+//                 path = {"/"}
+//                 element = { buildElement(<Home/>)}
+//                 errorElement = { <ErrorPage/>}
+//                 loader = {getQuestions}
+
+//             />
+//             <Route 
+//                 path = {"/add-question"}
+//                 element = {buildElement(<AddQuestion/>)}
+//             />
+//             <Route 
+//                 path = {"/question/:id"}
+//                 element = {buildElement(<QuestionPage/>)}
+//                 loader = {getQuestionById}
+//             />
+//             <Route 
+//                 path = {"/profile/:id"}
+//                 element = {buildElement(<Profile/>)}
+//             />
+//             <Route 
+//                 path = {"/edit-question/:id"}
+//                 element = {buildElement(<EditQuestion/>)}
+//                 loader = {getQuestionById}
+//             />
+//             <Route
+//                 path = {"/logout"}
+//                 element = {<Logout/>}
+//             />
+//         </Route>
+//         <Route 
+//             path = { "/login"}
+//             element = { <Login/>}
+//         />
+//         <Route 
+//             path = {"/signup"}
+//             element = {<Signup/>}
+//         />
+//         <Route 
+//             path = {"*"}
+//             element = {<Navigate to = "/"/>}
+//         />
+
+//     </>
+// ));
+
+
+// const router = createBrowserRouter(createRoutesFromElements(
+//     <Route element = {<Outlet/>} errorElement = {<ErrorPage/>}>
+//         <Route element = {<ProtectedRoute/>}>
+//             <Route 
+//                 path = {"/"}
+//                 element = { buildElement(<Home/>)}
+//                 loader = {getQuestions}
+//             />
+//             <Route 
+//                 path = {"/my-questions"}
+//                 element = { buildElement(<UserQuestions/>)}
+//                 loader = {getUserQuestions}
+//             />
+//             <Route 
+//                 path = {"/add-question"}
+//                 element = {buildElement(<AddQuestion/>)}
+//             />
+//             <Route 
+//                 path = {"/question/:id"}
+//                 element = {buildElement(<QuestionPage/>)}
+//                 loader = {getQuestionById}
+//             />
+//             <Route 
+//                 path = {"/profile"}
+//                 element = {buildElement(<Profile/>)}
+//                 loader={ProfileLoader}
+//             />
+//             <Route 
+//                 path = {"/edit-question/:id"}
+//                 element = {buildElement(<EditQuestion/>)}
+//                 loader = {getQuestionById}
+//             />
+//             <Route 
+//                 path = {"/suggestion/:id"}
+//                 element = {buildElement(<Suggestion/>)}
+//                 loader = {ProfileLoader}
+//             />
+//             <Route
+//                 path = {"/logout"}
+//                 element = {<Logout/>}
+//             />
+//         </Route>
+//         <Route 
+//             path = { "/login"}
+//             element = { <Login/>}
+//         />
+//         <Route 
+//             path = {"/signup"}
+//             element = {<Signup/>}
+//         />
+//         <Route 
+//             path = {"*"}
+//             element = {<Navigate to = "/"/>}
+//         />
+//     </Route>
+// ));
 
 // const router = createBrowserRouter([
 //     {

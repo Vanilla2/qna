@@ -28,7 +28,6 @@ const Login = ({history}: Props) => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         await login(formData.email, formData.password);
-        console.log("logged in");
         navigate("/");
         setFormData({email: "", password: ""});
     }

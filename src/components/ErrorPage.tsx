@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouteError } from 'react-router';
+import { Navigate, useRouteError } from 'react-router';
 
 export interface Props {
     [key: string]: any
@@ -10,13 +10,7 @@ const ErrorPage = (props: Props) => {
     console.error(error);
 
     return (
-        <div>
-            <>
-            Pizdec, Eroare
-            <br></br>
-            {error.data}
-            </>
-        </div>
+        <></>
     );
 }
 

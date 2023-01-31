@@ -16,27 +16,25 @@ const Navbar = (props: Props) => {
         <>
             <div className = "navbar">
                 <div className = "content">
-                    <Link to = "/" className = "logo">Home</Link>
+                    <div className = "left">
+                        <Link to = "/" className = "logo">HOME</Link>
+                        <Link to = "/my-questions" className = "logo">MY QUESTIONS</Link>
+                    </div>
                     {/* <div>
                         <input type = "text" className = "search default"/>
                     </div> */}
-                    {user ? 
-                        <div className = "logged">
-                            <Link to = {`/add-question`}>
-                                Add Question
-                            </Link>
-                            <Link to = {`/profile/${user.id}`}>
-                                Profile
-                            </Link>
-                            <Link to = {`/logout`}>
-                                Logout
-                            </Link>
-                        </div> :
-                        <div className = "notlogged">
-                            <button onClick = {() => setModal("login")} className = "default">Log in</button>
-                            <button onClick = {() => setModal("signup")} className = "default accent">Sign up</button>
-                        </div>
-                    }
+                    <div className = "logged">
+                        <Link to = {`/add-question`}>
+                            ADD QUESTION
+                        </Link>
+                        <Link to = {`/profile`}>
+                            PROFILE
+                        </Link>
+                        <Link to = {`/logout`}>
+                            LOGOUT
+                        </Link>
+                    </div> 
+                    
                 </div>
             </div>
         </>
