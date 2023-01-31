@@ -8,6 +8,7 @@ export interface Props {
 const ErrorPage = (props: Props) => {
     let error = useRouteError() as any;
     console.error(error);
+    console.log("we");
 
     return (
         <></>
